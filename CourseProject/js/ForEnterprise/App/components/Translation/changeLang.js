@@ -11,6 +11,17 @@ class ChangeLang {
     toggleLang() {
         const user = JSON.parse(this.localStorageHandler.get('user'));
 
+        if (!user) {
+            if(document.querySelector('.changeLang').textContent === 'en') {
+                changeLang('ru');
+            }
+            else {
+                changeLang('en');
+            }
+            
+            return;
+        }
+
         if(document.querySelector('.changeLang').textContent === 'en') {
             document.querySelector('.changeLang').textContent = 'ru';
             changeLang('ru');

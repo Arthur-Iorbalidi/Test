@@ -73,9 +73,11 @@ header {
     }
     .changeTheme {
         cursor: pointer;
+        transition: 300ms all;
     }
     .changeLang {
         cursor: pointer;
+        transition: 300ms all;
         font-size: 1.5rem;
     }
     .right {
@@ -224,6 +226,7 @@ header {
             .learn_more {
                 margin-top: 7px;
                 display: flex;
+                max-width: fit-content;
                 gap: 8px;
                 span {
                     color: $link-color;
@@ -537,6 +540,7 @@ header {
                 background: $link-color;
                 flex-basis: 160px;
                 color: #FFF;
+                transition: 300ms all;
             }
             .open {
                 border: 1px solid rgba(0, 0, 0, 0.10);
@@ -616,13 +620,13 @@ footer {
 }
 
 .modal_background {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
+    position: fixed;
+    width: 100%;
+    height: 100%;
     top: 0;
     left: 0;
     background-color: rgba(64, 63, 61, 0.80);
-    // display: none;
+    display: none;
     z-index: 2;
     padding: 56px;
     &.active {
@@ -705,6 +709,22 @@ footer {
             background-color: #900;
             border-radius: 0 0 5px 5px;
         }
+        .terms {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            span {
+                font-size: 1.5rem;
+            }
+            a {
+                font-size: 1.5rem;
+                color: #986464;
+            }
+            .conditions {
+                width: auto;
+            }
+        }
         .submitRegistration {
             width: 100%;
             font-size: 2.5rem;
@@ -769,6 +789,7 @@ footer {
     .modalAccount {
         .wrapper {
             display: flex;
+            align-items: center;
             flex-direction: column;
             gap: 40px;
         }
@@ -790,6 +811,13 @@ footer {
         }
         .account_name, .account_number, .account_email, .account_password, span {
             font-size: 2rem;
+        }
+        .reset {
+            padding: 10px 40px;
+            font-size: 1.5rem;
+            border-radius: 10px;
+            background-color: #ffaaaa;
+            max-width: fit-content;
         }
     }
 }
@@ -1415,11 +1443,44 @@ footer {
             color: #fff
         }
     }
+    .See {
+        .left {
+            .btns {
+                .contact:hover {
+                    background: #fff;
+                    color: #000
+                }
+            }
+        }
+    }
     footer {
         li:hover {
             a {
                 text-decoration: underline;
             }
+        }
+    }
+    nav {
+        ul {
+            li:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+    .authorization {
+        span:hover {
+            text-decoration: underline;
+        }
+    }
+    .changeTheme:hover {
+        transform: scale(1.2);
+    }
+    .changeLang:hover {
+        text-decoration: underline;
+    }
+    .learn_more:hover {
+        span {
+            text-decoration: underline;
         }
     }
 }

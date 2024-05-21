@@ -66,6 +66,11 @@
     </section>
     <div class="modalRegister_Background modal_background">
         <div class="modalRegister modal">
+            <div class="cross_register cross">
+                <svg height="35" version="1.1" viewBox="0 0 25 25" width="35" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="TabBar-Icons" stroke="none" stroke-width="1"><g fill="#000000" id="Cross-Cricle"><path d="M12.5,25 C19.4035594,25 25,19.4035594 25,12.5 C25,5.59644063 19.4035594,0 12.5,0 C5.59644063,0 0,5.59644063 0,12.5 C0,19.4035594 5.59644063,25 12.5,25 L12.5,25 Z M12.5,24 C18.8512746,24 24,18.8512746 24,12.5 C24,6.14872538 18.8512746,1 12.5,1 C6.14872538,1 1,6.14872538 1,12.5 C1,18.8512746 6.14872538,24 12.5,24 Z M13.2071068,12.5 L18.863961,6.84314575 L18.1568542,6.13603897 L12.5,11.7928932 L6.84314575,6.13603897 L6.13603897,6.84314575 L11.7928932,12.5 L6.13603897,18.1568542 L6.84314575,18.863961 L12.5,13.2071068 L18.1568542,18.863961 L18.863961,18.1568542 L13.2071068,12.5 L13.2071068,12.5 Z" id="Check-Circle"/></g></g>
+                </svg>
+            </div>
             <div class="content">
                 <form class="form_Register">
                     <h2 class="header_Registration" data-i18="57">Registration</h2>
@@ -116,6 +121,10 @@
                         <input type="text" placeholder="Repeat password" class="inputRepeatPassword" data-i18-placeholder="69">
                         <div class="mistakeMessage mistakeMessageRepeatPassword"></div>
                     </div>
+                    <div class="terms">
+                        <span>Agree with the <a href="https://www.brex.com/legal/platform-agreement">terms of use</a></span>
+                        <input class="conditions" type="checkbox">
+                    </div>
                     <button type="submit" class="submitRegistration" data-i18="59" disabled>Submit</button>
                 </form>
             </div>
@@ -123,6 +132,11 @@
     </div>
     <div class="modalAuthorization_Background modal_background">
         <div class="modalAuthorization modal">
+            <div class="cross_authorization cross">
+                <svg height="35" version="1.1" viewBox="0 0 25 25" width="35" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="TabBar-Icons" stroke="none" stroke-width="1"><g fill="#000000" id="Cross-Cricle"><path d="M12.5,25 C19.4035594,25 25,19.4035594 25,12.5 C25,5.59644063 19.4035594,0 12.5,0 C5.59644063,0 0,5.59644063 0,12.5 C0,19.4035594 5.59644063,25 12.5,25 L12.5,25 Z M12.5,24 C18.8512746,24 24,18.8512746 24,12.5 C24,6.14872538 18.8512746,1 12.5,1 C6.14872538,1 1,6.14872538 1,12.5 C1,18.8512746 6.14872538,24 12.5,24 Z M13.2071068,12.5 L18.863961,6.84314575 L18.1568542,6.13603897 L12.5,11.7928932 L6.84314575,6.13603897 L6.13603897,6.84314575 L11.7928932,12.5 L6.13603897,18.1568542 L6.84314575,18.863961 L12.5,13.2071068 L18.1568542,18.863961 L18.863961,18.1568542 L13.2071068,12.5 L13.2071068,12.5 Z" id="Check-Circle"/></g></g>
+                </svg>
+            </div>
             <form class="form_Authorization">
                 <h2 class="header_Authorization" data-i18="58">Authorization</h2>
                 <div class="inputWrapper inputEmailWrapper">
@@ -155,6 +169,7 @@
                     <div><span data-i18="38">Email: </span><span class="account_email"></span></div>
                     <div><span data-i18="39">Password: </span><span class="account_password"></span></div>
                 </div>
+                <button class="reset">Reset</button>
             </div>
         </div>
     </div>

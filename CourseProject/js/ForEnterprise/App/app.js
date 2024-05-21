@@ -3,6 +3,7 @@ import Account from './components/Account/Account.js';
 import Authorization from './components/Authorization/Authorization.js';
 import Logout from './components/Logout/Logout.js';
 import ValidationRegistration from './components/Registration/ValidationRegistration.js';
+import Reset from './components/Reset/reset.js';
 import ChangeLang, { changeLang } from './components/Translation/changeLang.js';
 import ChangeTheme from './components/changeTheme/changeTheme.js';
 
@@ -28,12 +29,18 @@ class App {
         const changeTheme = new ChangeTheme();
         changeTheme.init();
 
+        const reset = new Reset();
+        reset.init();
+
         this.isLogined();
     }
 
     isLogined() {
         const user = JSON.parse(this.localStorageHandler.get('user'));
-        if(user.isLogined) {
+        if(!user) {
+            return;
+        }
+        else {
             document.querySelector('.logIn').classList.add('hidden');
             document.querySelector('.sighIn').classList.add('hidden');
 
