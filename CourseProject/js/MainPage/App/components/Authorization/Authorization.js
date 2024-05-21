@@ -1,14 +1,22 @@
 import LocalStorageHandler from "../../../../services/LocalStorageHandler.js";
+import { changeLang } from "../Translation/changeLang.js";
 
 class Authorization {
     localStorageHandler = new LocalStorageHandler();
     
-    isNameValid = false;
+    emailPattern = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+    passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+
+    isEmailValid = false;
+    emailValue = '';
     isPasswordValid = false;
+    passwordValue = '';
 
 
     init() {
         document.querySelector('.modalAuthorization_Background').addEventListener('click', this.back.bind(this));
+
+        document.querySelector('.cross_authorization').addEventListener('click', this.clear.bind(this));
 
         document.querySelector('.logIn').addEventListener('click', this.open.bind(this));
 
@@ -22,38 +30,31 @@ class Authorization {
     }
 
     validationEmail(event) {
-        const user = JSON.parse(this.localStorageHandler.get('user'));
-        if(!user) {
-            document.querySelector('.mistakeMessageEmailAuthorization').textContent = 'There isn\'t such user';
-            this.isNameValid = false;
-            return;
-        }
-        if(user.email !== event.target.value) {
-            document.querySelector('.mistakeMessageEmailAuthorization').textContent = 'There isn\'t such user';
-            this.isNameValid = false;
+        if(!this.emailPattern.test(event.target.value)) {
+            document.querySelector('.mistakeMessageEmailAuthorization').textContent = 'It should be email';
+            this.isEmailValid = false;
+            event.target.classList.remove('correct');
         }
         else {
             document.querySelector('.mistakeMessageEmailAuthorization').textContent = '';
-            this.isNameValid = true;
+            this.isEmailValid = true;
+            event.target.classList.add('correct');
+            this.emailValue = event.target.value;
         }
 
         this.checkValidation();
     }
 
     validationPassword(event) {
-        const user = JSON.parse(this.localStorageHandler.get('user'));
-        if (!this.isNameValid) {
-            document.querySelector('.mistakeMessagePasswordAuthorization').textContent = 'Enter your email';
+        if(!this.passwordPattern.test(event.target.value)) {
+            document.querySelector('.mistakeMessagePasswordAuthorization').textContent = 'Min length: 8. Max: 20. Should contain at least one one uppercase letter, one lowercase letter, one number and one special character';
             this.isPasswordValid = false;
-            return;
-        }
-        if(user.password !== event.target.value) {
-            document.querySelector('.mistakeMessagePasswordAuthorization').textContent = 'Incorrect password';
-            this.isPasswordValid = false;
+            event.target.classList.remove('correct');
         }
         else {
             document.querySelector('.mistakeMessagePasswordAuthorization').textContent = '';
             this.isPasswordValid = true;
+            event.target.classList.add('correct');
             this.passwordValue = event.target.value;
         }
 
@@ -61,7 +62,7 @@ class Authorization {
     }
 
     checkValidation() {
-        if(this.isNameValid && this.isPasswordValid) {
+        if(this.isEmailValid && this.isPasswordValid) {
             document.querySelector('.submitAuthorization').disabled = false;
         }
         else {
@@ -77,6 +78,7 @@ class Authorization {
     clear() {
         document.querySelector('.modalAuthorization_Background').classList.remove('active');
         document.body.classList.remove('noscroll');
+        this.clearInputs();
     }
 
     back(event) {
@@ -88,22 +90,50 @@ class Authorization {
     clearInputs() {
         document.querySelector('.inputEmailAuthorization').value = '';
         document.querySelector('.inputPasswordAuthorization').value = '';
+        document.querySelector('.mistakeMessageEmailAuthorization').textContent = '';
+        document.querySelector('.mistakeMessagePasswordAuthorization').textContent = '';
+        document.querySelector('.submitAuthorization').disabled = true;
     }
 
     submit(event) {
         event.preventDefault();
 
-        this.clearInputs();
-        this.clear();
+        const users = JSON.parse(this.localStorageHandler.get('users'));
 
-        const user = JSON.parse(this.localStorageHandler.get('user'));
-        user.isLogined = true;
-        this.localStorageHandler.set('user', JSON.stringify(user));
+        if(!users) {
+            document.querySelector('.mistakeMessageEmailAuthorization').textContent = 'There isn\'t such user';
+        }
+        else {
+            let isEmailFound = false;
+            let user;
+            users.forEach((userItem) => {
+                if(userItem.email === this.emailValue) {
+                    isEmailFound = true;
+                    user = userItem;
+                }
+            });
 
-        this.changeTheme(user.theme);
-        this.changePage();
+            if(isEmailFound) {
+                if(user.password === this.passwordValue) {
+                    this.clearInputs();
+                    this.clear();
 
-        document.querySelector('.submitAuthorization').disabled = true;
+                    this.localStorageHandler.set('user', JSON.stringify(user));
+
+                    this.changeTheme(user.theme);
+                    changeLang(user.lang);
+                    this.changePage();
+
+                    document.querySelector('.submitAuthorization').disabled = true;
+                }
+                else {
+                    document.querySelector('.mistakeMessagePasswordAuthorization').textContent = 'Incorrect password';
+                }
+            }
+            else {
+                document.querySelector('.mistakeMessageEmailAuthorization').textContent = 'There isn\'t such user';
+            }
+        }
     }
 
     changePage(){

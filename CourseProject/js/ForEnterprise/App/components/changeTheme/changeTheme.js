@@ -12,6 +12,10 @@ class ChangeTheme {
 
         const user = JSON.parse(this.localStorageHandler.get('user'));
 
+        if (!user) {
+            return;
+        }
+
         if (user.theme === 'light') {
             user.theme = 'dark';
         }

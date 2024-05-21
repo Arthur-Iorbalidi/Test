@@ -14,6 +14,7 @@ class ValidationRegistration {
     isEmailValid = false;
     isPasswordValid = false;
     isRepeatPasswordValid = false;
+    terms = false;
 
     nameValue = null;
     surnameValue = null;
@@ -26,6 +27,8 @@ class ValidationRegistration {
 
     init() {
         document.querySelector('.modalRegister_Background').addEventListener('click', this.back.bind(this));
+
+        document.querySelector('.cross_register').addEventListener('click', this.clear.bind(this));
 
         document.querySelector('.sighIn').addEventListener('click', this.open.bind(this));
 
@@ -45,6 +48,8 @@ class ValidationRegistration {
         document.querySelector('.generatePassword').addEventListener('click', this.generatePassword.bind(this));
 
         document.querySelector('.inputRepeatPassword').addEventListener('input', this.validationRepeatPassword.bind(this));
+
+        document.querySelector('.conditions').addEventListener('change', this.checkTerms.bind(this));
 
         document.querySelector('.form_Register').addEventListener('submit', this.submit.bind(this));
     }
@@ -196,10 +201,10 @@ class ValidationRegistration {
         var formattedDate = inputDate.replace(/\D/g, "");
         formattedDate = formattedDate.slice(0, 8);
     
-        if (formattedDate.length >= 2) {
+        if (formattedDate.length > 2) {
             formattedDate = formattedDate.slice(0, 2) + "-" + formattedDate.slice(2);
         }
-        if (formattedDate.length > 4) {
+        if (formattedDate.length > 5) {
             formattedDate = formattedDate.slice(0, 5) + "-" + formattedDate.slice(5);
         }
     
@@ -248,8 +253,18 @@ class ValidationRegistration {
         document.querySelector('.inputPassword').dispatchEvent(new Event("input"));
     }
 
+    checkTerms(event) {
+        if(event.target.checked) {
+            this.terms = true;
+        }
+        else {
+            this.terms = false;
+        }
+        this.checkValidation();
+    }
+
     checkValidation() {
-        if(this.isNameValid && this.isSurnameValid && this.isPatronymicValid && this.isBirthdayValid && this.isNumberValid && this.isEmailValid && this.isPasswordValid) {
+        if(this.isNameValid && this.isSurnameValid && this.isPatronymicValid && this.isBirthdayValid && this.isNumberValid && this.isEmailValid && this.isPasswordValid && this.isRepeatPasswordValid && this.terms) {
             document.querySelector('.submitRegistration').disabled = false;
         }
         else {
@@ -265,6 +280,7 @@ class ValidationRegistration {
     clear() {
         document.querySelector('.modalRegister_Background').classList.remove('active');
         document.body.classList.remove('noscroll');
+        this.clearInputs();
     }
 
     back(event) {
@@ -282,6 +298,16 @@ class ValidationRegistration {
         document.querySelector('.inputEmail').value = '';
         document.querySelector('.inputPassword').value = '';
         document.querySelector('.inputRepeatPassword').value = '';
+        document.querySelector('.mistakeMessageName').textContent = '';
+        document.querySelector('.mistakeMessageSurname').textContent = '';
+        document.querySelector('.mistakeMessagePatronymic').textContent = '';
+        document.querySelector('.mistakeMessageBirthday').textContent = '';
+        document.querySelector('.mistakeMessageNumber').textContent = '';
+        document.querySelector('.mistakeMessageEmail').textContent = '';
+        document.querySelector('.mistakeMessagePassword').textContent = '';
+        document.querySelector('.mistakeMessageRepeatPassword').textContent = '';
+        document.querySelector('.conditions').checked = false;
+        document.querySelector('.submitRegistration').disabled = true;
     }
 
     submit(event) {
@@ -295,19 +321,49 @@ class ValidationRegistration {
             number: this.numberValue,
             email: this.emailValue,
             password: this.passwordValue,
-            isLogined: true,
             theme: 'light',
             lang: 'en',
         }
 
-        this.localStorageHandler.set('user', JSON.stringify(user));
+        const users = JSON.parse(this.localStorageHandler.get('users'));
 
-        this.clearInputs();
-        this.clear();
+        if(!users) {
+            this.localStorageHandler.set('users', JSON.stringify([user]));
 
-        this.changePage();
+            this.localStorageHandler.set('user', JSON.stringify(user));
 
-        document.querySelector('.submitRegistration').disabled = true;
+            this.clearInputs();
+            this.clear();
+
+            this.changePage();
+
+            document.querySelector('.submitRegistration').disabled = true;
+        }
+        else {
+            let isEmailAvailable = true;
+            users.forEach((user) => {
+                if(user.email === this.emailValue) {
+                    isEmailAvailable = false;
+                }
+            });
+
+            if(!isEmailAvailable) {
+                document.querySelector('.mistakeMessageEmail').textContent = 'This email is already taken';
+                return;
+            }
+            else {
+                this.localStorageHandler.set('users', JSON.stringify([...users, user]));
+
+                this.localStorageHandler.set('user', JSON.stringify(user));
+
+                this.clearInputs();
+                this.clear();
+
+                this.changePage();
+
+                document.querySelector('.submitRegistration').disabled = true;
+            }
+        }
     }
 
     changePage() {

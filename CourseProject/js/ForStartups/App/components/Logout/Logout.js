@@ -11,9 +11,20 @@ class Logout {
     logout() {
         this.changePage();
 
+        const users = JSON.parse(this.localStorageHandler.get('users'));
         const user = JSON.parse(this.localStorageHandler.get('user'));
-        user.isLogined = false;
-        this.localStorageHandler.set('user', JSON.stringify(user));
+
+        for(let i = 0; i < users.length; i++) {
+            if(users[i].email === user.email) {
+                users[i].lang = user.lang;
+                users[i].theme = user.theme;
+
+                break;
+            } 
+        }
+
+        this.localStorageHandler.set('users', JSON.stringify(users));
+        this.localStorageHandler.remove('user');
     }
 
     changePage() {
