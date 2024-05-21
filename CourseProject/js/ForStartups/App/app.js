@@ -37,7 +37,7 @@ class App {
 
     isLogined() {
         const user = JSON.parse(this.localStorageHandler.get('user'));
-        if(!user) {
+        if(!true) {
             return;
         }
         else {
